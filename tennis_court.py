@@ -8,24 +8,15 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.app import App
 
 
-class Minimal3dApp(App):
+class Tennis3dApp(App):
     
-    def build(self):
+    def build(self):   #アプリの構造を定義
         #カメラ（視点の向き）
         self.move_camera = True   
-        self.cam_distance = 10
-        self.super = []
         
-        init_dist = []
         rad = 70.0
-        azimuth = 0 #0 to 2PI
+        azimuth = 0 #0 to 2PI 
         polar = 90 #0 to PI
-        
-        self.m_sx = 0
-
-        x = rad * math.cos(azimuth) * math.sin(polar)                     
-        y = rad * math.sin(azimuth) * math.sin(polar)                     
-        z = rad * math.cos(polar)
 
         self.rad = rad
         self.azimuth = azimuth
@@ -40,11 +31,7 @@ class Minimal3dApp(App):
                         id: board3d
                         #look_at: [0, 0, 10, 0, 0, -20, 0, 1, 0]
                         canvas_size: (1920, 1080)
-                        #shadow_offset: 2
                         light_position: [-24.5, 150, 100]
-                        #shadow_origin: [-4,  1., -20.]
-                        #shadow_target: [-4.01, 0., -23.0]                  
-                        #shadow_threshold: 0.3 
                         post_processing: True  
 
                         shadow_threshold: 0.3 
@@ -84,7 +71,7 @@ class Minimal3dApp(App):
                             name: 'Node 0'
                             min_light_intensity: 1.0
                             scale: (0.025, 0.025, 0.025)   #ボールの大きさ
-                            translate: (0, 0, -0.5)
+                            translate: (3, 5, 0)
                             effect: True
                             meshes: ("./data/obj/sphere.obj", ) 
                             Button:
@@ -93,13 +80,11 @@ class Minimal3dApp(App):
                                         rgb: 1.000 ,0.9608 ,0.2980
                                     Rectangle:
                                         size: self.size
-                                        pos: self.pos 
-                        
+                                        pos: self.pos                         
                                         
                         Node:
                             id: Net
                             name: 'Node 2'
-                            #rotate: (45, 10, 15, 0)
                             scale: (2, 2, 2)
                             translate: (0, 0, 0)
                             effect: True
@@ -119,7 +104,6 @@ class Minimal3dApp(App):
                         Node:
                             id: TennisCourt
                             name: 'Node 1'
-                            #rotate: (45, 10, 15, 0)
                             scale: (2, 2, 2)
                             translate: (0, 0, 0)
                             min_light_intensity: 1.0
@@ -139,7 +123,6 @@ class Minimal3dApp(App):
                         Node:
                             id: CourtLines
                             name: 'Node l'
-                            #rotate: (45, 10, 15, 0)
                             scale: (2, 2, 2)
                             translate: (0, 0, 0)
                             #effect: True
@@ -158,7 +141,6 @@ class Minimal3dApp(App):
                         Node:
                             id: CourtLines2
                             name: 'Node l2'
-                            #rotate: (45, 10, 15, 0)
                             scale: (2, 2, 2)
                             translate: (0, 0, 0)
                             #effect: True
@@ -173,63 +155,32 @@ class Minimal3dApp(App):
                                         Line:
                                             width:10
                                             points: 0, 0, 0, 1
-
                         
-
                     '''
         
 
 
         layout3d = Builder.load_string(dedent(self.layout3d_str))
-        layout3d.bind(on_touch_move = self.on_touch_move)
+        layout3d.bind(on_touch_move = self.on_touch_move)    
         self.layout3d = layout3d
-        self.baselayout = layout3d
-        self.layout3d.f_type = 0
-        layout3d.bind(on_motion=self.on_motion)       
-
-        grid = GridLayout(cols=2)
-        grid.add_widget(self.layout3d)
-        self.grid = grid
         
-        return self.grid
-        #return layout3d
+        instance = GridLayout(cols=2)
+        instance.add_widget(self.layout3d)
+        self.instance = instance
         
+        return self.instance
 
-    def _keyboard_released(self, window, keycode):
-        self.super = []
-
-    def _keyboard_on_key_down(self, window, keycode, text, super):
-        print("Values ", self.super)
-        if 'lctrl' in self.super and keycode[1] == 'z':
-            #self.super = []
-            self.undo()
-            return False
-        elif 'lctrl' not in self.super:
-            self.super.append('lctrl')
-            return False
-        else:
-            self.super = []
-            return False    
-               
-    def on_motion(self, etype, motionevent):
-        print(etype)
-        pass
-    
         
+######マウスでぐりぐり動かすためのおまじない関数######
 
-    def get_camera_pos(self):
+    def get_camera_pos(self):    
         rad = self.rad
         azimuth = math.radians(self.azimuth)
         polar = math.radians(self.polar)
         x = rad * math.sin(azimuth) * math.sin(polar)                     
         y = rad * math.cos(polar)
         z = rad * math.cos(azimuth) * math.sin(polar)                               
-        return [x, y, z]
-        
-
-    def on_button_touch_up(self, *args):
-        self.move_camera = True
-        
+        return [x, y, z]    
     
         
     def on_touch_move(self, widget, touch):
@@ -252,5 +203,5 @@ class Minimal3dApp(App):
 
     
 if __name__ == '__main__':
-    Minimal3dApp().run()
+    Tennis3dApp().run()
 
