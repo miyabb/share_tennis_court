@@ -155,15 +155,6 @@ class Tennis3dApp(App):
                                         Line:
                                             width:10
                                             points: 0, 0, 0, 1
-
-                        Button:
-                            id: Button1
-                            size_hint: (0.2, 0.1)
-                            text: "Winning Pattern"
-                            font_size: 20
-                            background_normal: ''
-                            background_color: 1, .3, .4, .85
-
                         
                     '''
         
